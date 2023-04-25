@@ -1,7 +1,7 @@
 .four-0-four-section{
     width: 100%;
     height: 100vh;
-    background: url(../ing/404-bg.png);
+    background: url(../imgs/404-bg.png);
     background-size: cover ;
     display:flex ;
     justify-content: center;
@@ -13,17 +13,17 @@
     font-size: 70px;
     margin-bottom: 30px;
 }
-    .sub-line{
-        font-size: 25px;
-        text-align: center;
-        font-family: 'lato', sans-sarif;
-        text-transform: capitalize;
-    }
-    .sub-line a{
-        color: #fff;
+.sub-line{
+    font-size: 25px;
+    text-align: center;
+    font-family: 'lato', sans-sarif;
+    text-transform: capitalize;
+}
+.sub-line a{
+    color: #fff;
 
 
-    }
+}
 
 
 
