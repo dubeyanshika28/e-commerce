@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurniHome-product page</title>
+
+      
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel&family=Lato:wght@100&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" /> 
+    <link rel="stylesheet" href="css/product.css"> 
+
+</head>
+
+<body>
+    <nav class="navbar bg">
+        <ul class="links-container">
+          <li class="link-item"><a href="#" class="link active">home</a></li>
+          <li class="link-item"><a href="#" class="link">Product</a></li>
+          <li class="link-item"><a href="#" class="link">about</a></li>
+          <li class="link-item"><a href="#" class="link">Contact</a></li>
+        </ul>
+        <div class="user-interactions">
+          <div class="cart">
+            <img src="imgs/cart.png" alt="" class="cart-icon" />
+            <span class="cart-item-count">00</span>
+          </div>
+          <div class="'user">
+            <img src="imgs/user.png" alt="" class="user-icon" />
+          </div>
+        </div>
+      </nav>
+
+      <!--product detail-->
+      <section class="product-section">
+        <img src="imgs/product-image.png"class="product-img" alt="">
+        <div class="product-detail">
+            <h1 class="product-title">Premium sofa</h1>
+            <p class="product-des">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam voluptates rerum omnis, voluptatum consequuntur pariatur</p>
+          <div class="rating">
+            <img src="imgs/fill star.png" class="star" alt="">
+            <img src="imgs/fill star.png" class="star" alt="">
+            <img src="imgs/fill star.png" class="star" alt="">
+            <img src="imgs/fill star.png" class="star" alt=""> 
+            <img src="imgs/no fill star.png" class="star" alt="">
+            <span class="rating-count">4,823 review</span>
+          </div>
+          <p class="price"> $ 499</p>
+          <div class="btn-container">
+            <button class="product-btn buy-btn"> buy now</button>
+            <button class="product-btn cart-btn"> add to cart</button>
+          </div>
+          
+        </div>
+      </section>
+
+      <section class="detail-des">
+        <h1 class="section-title">details</h1>
+        <p class="des">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea nemo, iusto magni sit cupiditate dolores! </p>
+      </section>
+
+      <!--Review Section-->
+    <section class="review-section">
+        <h1 class="section-title">
+          What our <span>Customers</span> says about us
+        </h1>
+        <div class="review-container">
+          <div class="review-card">
+            <div class="user-dp" data-rating="4.9"><img src="imgs/user 1.png" alt="" /></div>
+            <h2 class="review-title"> Best Quality More than my expectations.</h2>
+            <p class="review">Product are of very good quality and have very good finish.</p>
+          </div>
+          <div class="review-card">
+            <div class="user-dp" data-rating="4.9"><img src="imgs/user 2.png" alt="" /></div>
+            <h2 class="review-title"> On time delivery with best Packaging.</h2>
+            <p class="review">Product deliverd within two days, very happy from Service.</p>
+          </div>
+          <div class="review-card">
+            <div class="user-dp" data-rating="4.9"><img src="imgs/user 3.png" alt="" /></div>
+            <h2 class="review-title"> Very helpful Customer support.</h2>
+            <p class="review">I was worried about some doubts but customer support is very good and helpful..</p>
+          </div>
+          <div class="review-card">
+            <div class="user-dp" data-rating="4.9"><img src="imgs/user 4.png" alt="" /></div>
+            <h2 class="review-title"> Very easy to return/replace products.</h2>
+            <p class="review">my product replaced very easily.</p>
+          </div>
+        </div>
+      </section>
+
+      <!--add review form-->
+      <section class="add-review-section">
+        <h1 class="section-title">Add a review</h1>
+        <input type="text" class="review-headline" placeholder="review headline">
+        <textarea placeholder="review" class="review-field"></textarea>
+        <p class="rating-text">how much you liked the product</p>
+        <div class="star-container">
+          <img src="imgs/no fill star.png" class="rating-star" alt="">
+          <img src="imgs/no fill star.png" class="rating-star" alt="">
+          <img src="imgs/no fill star.png" class="rating-star" alt="">
+          <img src="imgs/no fill star.png" class="rating-star" alt=""> 
+          <img src="imgs/no fill star.png" class="rating-star" alt="">
+
+        </div>
+        <button class="add-review-btn">add review</button>
+      </section>
+
+      <!--similar products -->
+      <section class="best-selling-product-section">
+        <h1 class="section-title">similar product</h1>
+        <div class="product-container">
+          <div class="product-card">
+            <img src="imgs/product-1.png" class="product-img" alt="" />
+            <p class="product-name">Lights</p>
+          </div>
+          <div class="product-card">
+            <img src="imgs/product-2.png" class="product-img" alt="" />
+            <p class="product-name">Table</p>
+          </div>
+          <div class="product-card">
+            <img src="imgs/product-3.png" class="product-img" alt="" />
+            <p class="product-name">Storage</p>
+          </div>
+          <div class="product-card">
+            <img src="imgs/product-4.png" class="product-img" alt="" />
+            <p class="product-name">Sofa</p>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        FurniHome -- Where style meets affordability.
+        </footer>
+    <script src="js/product.js"></script>
+</body>
+</html>  
