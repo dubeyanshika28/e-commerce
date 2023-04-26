@@ -26,7 +26,7 @@ formBtn.addEventListener('click', () => {
             showFormError('enter your email');
         } else if(password.value.length < 8){
             showFormError('password must be 8 letters long');
-        } else if(!Number(number) || number.value.length < 10){
+        } else if(Number(number) || number.value.length < 10){
             showFormError('invalid number, please enter valid one');
         } else if(!tac.checked){
             showFormError('you must agree to our terms and condition');
