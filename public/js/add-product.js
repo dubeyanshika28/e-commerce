@@ -25,7 +25,7 @@ editables.map((element) => {
 
 // image upload
 let uploadInput = document.querySelector('#upload-image');
-let imagePath = 'img/noImage.png'; // default image
+let imagePath = "public\imgs\noImage.png"; // default image
 
 uploadInput.addEventListener('change', () => {
     const file = uploadInput.files[0];

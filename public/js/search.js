@@ -1,4 +1,3 @@
-// add product
-app.get('/add-product', (req, res) => {
-    res.sendFile('add-product.html', { root: "public" });
-})
+const searchKey = decodeURI(location.pathname.split('/').pop());
+
+getProducts(searchKey).then(data => createProductCards(data, searchKey, '.search-listing'))

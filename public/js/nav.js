@@ -5,15 +5,10 @@ window.addEventListener('scroll',() => {
     if(scrollY>=180){
         navbar.classList.add('bg');
 
-    }
-    else{
+    }else{
         navbar.classList.remove('bg');
     }
 })
-
-
-
-
 
 const createNavbar = () => {
     let navbar = document.querySelector('.navbar');
@@ -27,6 +22,10 @@ const createNavbar = () => {
     <li class="link-item"><a href="#" class="link">Contact</a></li>
   </ul>
   <div class="user-interactions">
+    <div class="search-box">
+      <input type="text" class="search" placeholder="search item">
+      <button class="search-btn"><img src="imgs/search.png" alt=""></button>
+    </div>
     <div class="cart">
       <img src="imgs/cart.png" alt="" class="cart-icon" />
       <span class="cart-item-count">00</span>
@@ -40,7 +39,7 @@ const createNavbar = () => {
     </div>
   </div>
 
-    `
+`
 }
 createNavbar();
 
@@ -69,3 +68,14 @@ const logout = () => {
     sessionStorage.clear()
     location.reload();
 }
+
+// search box
+
+let searchBtn = document.querySelector('.search-btn')
+let searchBox = document.querySelector('.search');
+
+searchBtn.addEventListener('click', () => {
+    if(searchBox.value.length){
+        location.href = `/search/${searchBox.value}`;
+    }
+})

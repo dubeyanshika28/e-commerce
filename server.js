@@ -30,12 +30,55 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json()) // enable form sharing
 
+//aws
+import aws from "aws-sdk";
+import "dotenv/config";
+
+//aws setup
+const region = "US East (N. Virginia) us-east-1";
+const bucketName = "ecommm";
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+
+
+aws.config.update({
+    region,
+    accessKeyId,
+    secretAccessKey
+})
+
+// init s3
+const s3 = new aws.S3();
+
+// generate image url
+async function generateURL(){
+    let date = new Date();
+
+    const imageName = `${date.getTime()}.jpeg`;
+
+    const params = {
+        Bucket: bucketName,
+        Key: imageName,
+        Expires: 300, // 300 ms
+        ContentType: "image/jpeg"
+    }
+
+    const uploadURL = await s3.getSignedUrlPromise("putObject", params);
+    return uploadURL;
+}
+
+app.get('/s3url', (req, res) => {
+    generateURL().then(url => res.json(url));
+})
+
 // routes
 // home route
 app.get('/',(req, res) =>{
     res.sendFile("index.html", { root : "public"})
 
 })
+
+//signup
 
 app.get('/signup', (req, res) => {
     res.sendFile("signup.html", { root : "public" })
@@ -120,19 +163,6 @@ app.post('/login',(req, res ) => {
     })
 })
 
-// 404 route
-app.get('/404',(req, res) =>{
-    res.sendFile("404.html", {root : "public"})
-})
-
-app.use((req, res) =>{
-    res.redirect('/404')
-})
-
-app.listen(3000,() =>{
-    console.log('listening on port 3000');
-})
-
 // seller route
 app.get('/seller', (req, res) => {
     res.sendFile('seller.html', { root : "public" })
@@ -166,4 +196,164 @@ app.get('/dashboard', (req, res) => {
 app.get('/add-product', (req, res) => {
     res.sendFile('add-product.html', { root: "public" });
 })  
+
+app.get('/add-product/:id', (req, res) => {
+    res.sendFile('add-product.html', { root: "public" });
+})
+
+app.post('/add-product', (req, res) => {
+    let { name, shortDes, detail, price, image, tags, email, draft, id } = req.body;
+
+    if(!draft){
+        if(!name.length){
+            res.json({'alert' : 'should enter product name'});
+        } else if(!shortDes.length){
+            res.json({'alert' : 'short des must be 80 letters long'});
+        } else if(!price.length || !Number(price)){
+            res.json({'alert' : 'enter valid price'});
+        } else if(!detail.length){
+            res.json({'alert' : 'must enter the detail'});
+        } else if(!tags.length){
+            res.json({'alert' : 'enter tags'});
+        }
+    }
+
+    // add-product
+
+    let docName = id == undefined ? `${name.toLowerCase()}-${Math.floor(Math.random() * 50000)}` : id;
+
+    let products = collection(db, "products");
+    setDoc(doc(products, docName), req.body)
+    .then(data => {
+        res.json({'product': name})
+    })
+    .catch(err => {
+        res.json({'alert': 'some error occured.'})
+    })
+})
+
+app.post('/get-products', (req, res) => {
+    let { email, id, tag } = req.body
+    
+    let products = collection(db, "products");
+    let docRef;
+
+    if(id){
+        docRef = getDoc(doc(products, id));
+    } else if(tag){
+        docRef = getDocs(query(products, where("tags", "array-contains", tag)))
+    } else{
+        docRef = getDocs(query(products, where("email", "==", email)))
+    }
+
+    docRef.then(products => {
+        if(products.empty){
+            return res.json('no products');
+        }
+        let productArr = [];
+        
+        if(id){
+            return res.json(products.data());
+        } else{
+            products.forEach(item => {
+                let data = item.data();
+                data.id = item.id;
+                productArr.push(data);
+            })    
+        }
+
+        res.json(productArr);
+    })
+})
+
+app.post('/delete-product', (req, res) => {
+    let { id } = req.body;
+
+    deleteDoc(doc(collection(db, "products"), id))
+    .then(data => {
+        res.json('success');
+    }).catch(err => {
+        res.json('err');
+    })
+})
+
+app.get('/products/:id', (req, res) => {
+    res.sendFile("product.html", { root : "public" })
+})
+
+app.get('/search/:key', (req, res) => {
+    res.sendFile("search.html", { root : "public" })
+})
+
+
+// review routes
+app.post('/add-review', (req, res) => {
+    let { headline, review, rate, email, product } = req.body;
+    
+    // form validations
+    if(!headline.length || !review.length || rate == 0 || email == null || !product){
+        return res.json({'alert':'Fill all the inputs'});
+    }
+
+    // storing in Firestore
+    let reviews = collection(db, "reviews");
+    let docName = `review-${email}-${product}`;
+
+    setDoc(doc(reviews, docName), req.body)
+    .then(data => {
+        return res.json('review')
+    }).catch(err => {
+        console.log(err)
+        res.json({'alert': 'some err occured'})
+    });
+})
+
+app.post('/get-reviews', (req, res) => {
+    let { product, email } = req.body;
+
+    let reviews = collection(db, "reviews");
+
+    getDocs(query(reviews, where("product", "==", product)), limit(4))
+    .then(review => {
+        let reviewArr = [];
+
+        if(review.empty){
+            return res.json(reviewArr);
+        }
+
+        let userEmail = false;
+
+        review.forEach((item, i) => {
+            let reivewEmail = item.data().email;
+            if(reivewEmail == email){
+                userEmail = true;
+            }
+            reviewArr.push(item.data())
+        })
+
+        if(!userEmail){
+            getDoc(doc(reviews, `review-${email}-${product}`))
+            .then(data => reviewArr.push(data.data()))
+        }
+
+        return res.json(reviewArr);
+    })
+})
+
+app.get('/cart', (req, res) => {
+    res.sendFile("cart.html", { root : "public" })
+})
+
+// 404 route
+app.get('/404',(req, res) =>{
+    res.sendFile("404.html", {root : "public"})
+})
+
+app.use((req, res) =>{
+    res.redirect('/404')
+})
+
+app.listen(3000,() =>{
+    console.log('listening on port 3000');
+})
 
